@@ -1,0 +1,32 @@
+﻿@using QRCodeManagement.Extensions
+@using QRCodeManagement.Models
+
+@model QrCodeModel
+
+<div class="row">
+	<div class="col-md-12 form-group">
+		<label>
+			Choose Templates
+		</label>
+	</div>
+</div>
+<div class="row">
+	<div id="templateContainer" class="col-md-12 form-group template-container">
+		<div class="template-img-item-container template-item js-template-item @((Model.SelectedTemplateId == null || Model.SelectedTemplateId == 0) ? "active" : "")" data-bg-color="#FFFFFF" data-fg-color="#000000" data-template-id="0" data-logo-file-name="">
+			<img src="~/images/template.png" />
+		</div>
+		@{
+			foreach (var templateItem in Model.Templates)
+			{
+				<div class="template-item-container">
+					<div class="template-img-item-container template-item js-template-item @(templateItem.Id == Model.SelectedTemplateId ? "active" : "")" data-bg-color="@templateItem.Background" data-fg-color="@templateItem.Foreground" data-logo-file-name="@templateItem.EmbedLogo" data-template-id="@templateItem.Id">
+						<img src="@Html.RenderQrSource(null, templateItem.Foreground, templateItem.Background, templateItem.EmbedLogo)" />
+					</div>
+					<div class="remove-btn js-template-remove" data-template-id="@templateItem.Id">
+						<i class="fa fa-close" aria-hidden="true" title="remove"></i>
+					</div>
+				</div>
+			}
+		}
+	</div>
+</div>

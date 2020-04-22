@@ -1,0 +1,101 @@
+﻿<div class="@(ViewData["ViewVCard"] != null ? "col-md-12" : "col-md-4") vcard-preview-column" id="viewVcardTemplate">
+	<div class="panel panel-default vcard-panel-preview">
+		<div id="vcardHeaderWrapper" class="vcard-header-wrapper" style="background-color: {{vCardModel.color1}}">
+			<div class="vcard-top-info">
+				<img ng-show="vCardModel.profileImage != ''" id="profileImage" class="profile-image" src="{{vCardModel.profileImage}}" />
+				<h2 class="full-name hidden" id="fullname"><span id="firstName">{{vCardModel.firstName}} </span><span id="firstName">{{vCardModel.lastName}}</span></h2>
+				<h6 class="job-title hidden" id="jobTitle">{{vCardModel.jobTitle}}</h6>
+			</div>
+			<div class="vcard-functions">
+				<a href="tel:{{vCardModel.mobileNumber || vCardModel.phone}}" ng-show="vCardModel.mobileNumber || vCardModel.phone">
+					<i class="fa fa-phone"></i>
+					<small>Call</small>
+				</a>
+				<a href="mailto:{{vCardModel.email}}?subject=From my vCard&body=Hello {{vCardModel.firstname}}" ng-show="vCardModel.email">
+					<i class="fa fa-envelope"></i>
+					<small>Email</small>
+				</a>
+				<a href="https://www.google.com/maps/dir/Current+Location/{{vCardModel.street}}+{{vCardModel.city}}+{{vCardModel.zipCode}}+{{vCardModel.country}}" target="_blank" ng-show="vCardModel.street || vCardModel.city">
+					<i class="fa fa-map-marker"></i>
+					<small>Directions</small>
+				</a>
+			</div>
+		</div>
+		<div class="add-contact-wrapper">
+			<a href="{{vCardModel.downloadLink}}" class="add-contact-btn" style="background-color: {{vCardModel.color2}}"><i class="glyphicon glyphicon-plus"></i><i class="glyphicon glyphicon-user"></i></a>
+		</div>
+		<div class="info-wrapper" ng-show="vCardModel.about">
+			<div class="left-item">
+			</div>
+			<div class="right-item">
+				<div class="item">
+					<div class="top hidden" id="about">{{vCardModel.about}}</div>
+					<div class="bottom"></div>
+				</div>
+			</div>
+		</div>
+		<div class="info-wrapper" ng-show="vCardModel.mobileNumber || vCardModel.phone || vCardModel.fax">
+			<div class="left-item">
+				<i class="fa fa-phone"></i>
+			</div>
+			<div class="right-item">
+				<div class="item" ng-show="vCardModel.mobileNumber">
+					<div class="top hidden" id="mobileNumber"><a href="tel:{{vCardModel.mobileNumber}}">{{vCardModel.mobileNumber}}</a></div>
+					<div class="bottom">Mobile</div>
+				</div>
+				<div class="item" ng-show="vCardModel.phone">
+					<div class="top hidden" id="phone"><a href="tel:{{vCardModel.phone}}">{{vCardModel.phone}}</a></div>
+					<div class="bottom">Telephone</div>
+				</div>
+				<div class="item" ng-show="vCardModel.fax">
+					<div class="top hidden" id="fax">{{vCardModel.fax}}</div>
+					<div class="bottom">Fax</div>
+				</div>
+			</div>
+		</div>
+		<div class="info-wrapper" ng-show="vCardModel.email">
+			<div class="left-item">
+				<i class="fa fa-envelope"></i>
+			</div>
+			<div class="right-item">
+				<div class="item">
+					<div class="top hidden" id="email"><a href="mailto:{{vCardModel.email}}">{{vCardModel.email}}</a></div>
+					<div class="bottom">Email</div>
+				</div>
+			</div>
+		</div>
+		<div class="info-wrapper" ng-show="vCardModel.company || vCardModel.jobTitle">
+			<div class="left-item">
+				<i class="fa fa-suitcase"></i>
+			</div>
+			<div class="right-item">
+				<div class="item">
+					<div class="top hidden" id="company">{{vCardModel.company}}</div>
+					<div class="bottom hidden" id="jobTitleSmall">{{vCardModel.jobTitle}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="info-wrapper" ng-show="vCardModel.street || vCardModel.zipCode || vCardModel.city || vCardModel.country">
+			<div class="left-item">
+				<i class="fa fa-map-marker"></i>
+			</div>
+			<div class="right-item">
+				<div class="item">
+					<div class="top hidden" id="street"><a href="https://www.google.com/maps/dir/Current+Location/{{vCardModel.street}}+{{vCardModel.city}}+{{vCardModel.zipCode}}+{{vCardModel.country}}" target="_blank">{{vCardModel.street}}<span ng-show="vCardModel.street && (vCardModel.zipCode || vCardModel.city)">,</span> {{vCardModel.zipCode}} {{vCardModel.city}}</a></div>
+					<div class="bottom hidden" id="country">{{vCardModel.country}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="info-wrapper" ng-show="vCardModel.website">
+			<div class="left-item">
+				<i class="fa fa-share-alt"></i>
+			</div>
+			<div class="right-item">
+				<div class="item">
+					<div class="top hidden" id="website">{{vCardModel.website}}</div>
+					<div class="bottom">Website</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

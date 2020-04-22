@@ -1,0 +1,35 @@
+﻿@using QRCodeManagement.Constants
+@using QRCodeManagement.EntityManager.DbEntity
+@using QRCodeManagement.Models
+@model QrCodeModel
+
+<div class="row">
+	<div class="col-md-12 form-group">
+		<label>
+			Choose Logo
+		</label>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12 form-group logo-container">
+		<div class="logo-item js-logo-item @((Model.SelectedLogoId == null || Model.SelectedLogoId == 0) ? "active": "")" data-logo-file-name="" data-logo-id="0">
+			<img src="@($"{AppConstants.LOGO_UPLOAD_FOLDER}no_logo.png")">
+		</div>
+		<div class="logo-item js-logo-item" data-logo-file-name="default_logo.png" data-logo-id="-1">
+			<img src="@($"{AppConstants.LOGO_UPLOAD_FOLDER}default_logo.png")" />
+		</div>
+		@{
+			foreach (Logo logo in Model.Logos)
+			{
+				<div class="logo-item-container">
+					<div class="logo-item js-logo-item @(logo.Id == Model.SelectedLogoId ? "active": "" )" data-logo-file-name="@logo.FileName" data-logo-id="@logo.Id">
+						<img src="@($"{AppConstants.LOGO_UPLOAD_FOLDER}{logo.FileName}")" />
+					</div>
+					<div class="remove-btn js-logo-remove" data-logo-id="@logo.Id">
+						<i class="fa fa-close" aria-hidden="true" title="remove"></i>
+					</div>
+				</div>
+			}
+		}
+	</div>
+</div>

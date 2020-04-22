@@ -1,0 +1,35 @@
+﻿@model QRCodeManagement.Models.QrCodeModel
+
+<div class="divider"></div>
+<div class="row">
+	<div class="col-md-6 form-group">
+		<label for="foreground" class="control-label">Foreground</label>
+		<input id="foreground" name="foreground" placeholder="@(string.IsNullOrEmpty(Model.Foreground) ? "#000000": Model.Foreground)" type="text" class="form-control left js-mini-colors" data-control="brightness" value="@(string.IsNullOrEmpty(Model.Foreground) ? "#000000": Model.Foreground)" data-swatches="#fff|#000|#f00|#0f0|#00f|#ff0|#0ff">
+	</div>
+
+	<div class="col-md-6 form-group">
+		<label for="background" class="control-label">Background</label>
+		<input id="background" name="background" placeholder="@(string.IsNullOrEmpty(Model.Background) ? "#FFFFFF": Model.Background)" type="text" class="form-control left js-mini-colors" data-control="brightness" value="@(string.IsNullOrEmpty(Model.Background) ? "#FFFFFF": Model.Background)" data-swatches="#fff|#000|#f00|#0f0|#00f|#ff0|#0ff">
+	</div>
+</div>
+<div class="divider"></div>
+<div id="templateList">@{ Html.RenderPartial(MVC.QrManagement.Views.Partials.TemplateList); }</div>
+<div class="divider"></div>
+<div id="logoList">@{ Html.RenderPartial(MVC.QrManagement.Views.Partials.LogoList); }</div>
+
+<div class="row">
+	<div class="col-md-12 form-group">
+		<span class="btn btn-default fileinput-button">
+			<i class="glyphicon glyphicon-plus"></i>
+			<span>Add new logo <span class="italic-bold">(up to 2 MB)</span></span>
+			<input id="fileLogoUpload" type="file" name="files[]" accept="image/*">
+		</span>
+
+		<div id="progressBar" class="progress hidden">
+			<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+				<span class="sr-only">0% complete</span>
+			</div>
+		</div>
+	</div>
+</div>
+

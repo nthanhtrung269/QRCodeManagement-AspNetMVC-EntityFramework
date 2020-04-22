@@ -1,0 +1,1 @@
+This foler use to locate Entity files, this file need to delete once there are files in the folder

@@ -1,0 +1,31 @@
+﻿@using QRCodeManagement.Models
+
+@{
+	ViewBag.Title = "Edit";
+	Layout = "~/Views/Shared/_ResponsiveLayout.cshtml";
+}
+
+@model QrCodeModel
+
+@section HeadContent {
+	<!-- MiniColors -->
+	@Styles.Render("~/QRCodeMangement/css")
+}
+
+@if (ViewBag.Type == 0)
+{
+	Html.RenderPartial(MVC.QrManagement.Views.Partials.EditUrl);
+}
+else if (ViewBag.Type == 1)
+{
+	Html.RenderPartial(MVC.QrManagement.Views.Partials.EditVCard);
+}
+else if (ViewBag.Type == 2)
+{
+	Html.RenderPartial(MVC.QrManagement.Views.Partials.EditFile);
+}
+
+@section BottomOfPageContent {
+	@Scripts.Render("~/file_upload/js")
+	@Scripts.Render("~/bundles/qr_code")
+}

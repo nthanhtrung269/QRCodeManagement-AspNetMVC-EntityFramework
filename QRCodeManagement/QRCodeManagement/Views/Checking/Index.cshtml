@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+@{
+	Layout = null;
+}
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<meta name="robots" content="noindex, nofollow">
+	<title>Checking</title>
+	@Styles.Render("~/main_app/css")
+	@Styles.Render("~/custom/css")
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/mobile-detection/js")
+	<link rel="stylesheet" href="~/Content/Loading.css">
+</head>
+<body>
+<div class="row full-content">
+	<div class="col-md-12">
+		<div class="cs-loader" id="loader">
+			<div class="checking-label">Checking...</div>
+			<div class="cs-loader-inner">
+				<label> ●</label>
+				<label> ●</label>
+				<label> ●</label>
+				<label> ●</label>
+				<label> ●</label>
+				<label> ●</label>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

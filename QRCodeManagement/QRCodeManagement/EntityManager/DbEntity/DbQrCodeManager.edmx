@@ -1,0 +1,364 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="QRCodeManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Logo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FileName" Type="varchar" MaxLength="200" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="QRCode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="TargetUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="StatisticsUrl" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Foreground" Type="varchar" MaxLength="100" />
+          <Property Name="Background" Type="varchar" MaxLength="100" />
+          <Property Name="EmbedLogo" Type="varchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="TemplateId" Type="int" />
+          <Property Name="Filename" Type="varchar" MaxLength="200" />
+          <Property Name="QrType" Type="tinyint" Nullable="false" />
+          <Property Name="IsArchived" Type="bit" Nullable="false" />
+          <Property Name="EmbedLogoId" Type="int" />
+        </EntityType>
+        <EntityType Name="Statictics">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QrId" Type="varchar" MaxLength="100" />
+          <Property Name="Device" Type="varchar" MaxLength="100" />
+          <Property Name="Os" Type="varchar" MaxLength="100" />
+          <Property Name="LongTitude" Type="varchar" MaxLength="100" />
+          <Property Name="LatTitude" Type="varchar" MaxLength="100" />
+          <Property Name="ScanDate" Type="datetime" />
+          <Property Name="Country" Type="varchar" MaxLength="100" />
+          <Property Name="City" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Template">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Foreground" Type="varchar" MaxLength="100" />
+          <Property Name="Background" Type="varchar" MaxLength="100" />
+          <Property Name="EmbedLogo" Type="varchar" MaxLength="100" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="VCardDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QrId" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Company" Type="nvarchar" MaxLength="100" />
+          <Property Name="JobTitle" Type="nvarchar" MaxLength="100" />
+          <Property Name="Street" Type="nvarchar" MaxLength="100" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="100" />
+          <Property Name="State" Type="nvarchar" MaxLength="50" />
+          <Property Name="Zipcode" Type="nvarchar" MaxLength="10" />
+          <Property Name="MobileNumber" Type="nvarchar" MaxLength="15" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="15" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="15" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Website" Type="nvarchar" MaxLength="500" />
+          <Property Name="About" Type="nvarchar" MaxLength="250" />
+          <Property Name="ProfileImage" Type="varchar" MaxLength="50" />
+          <Property Name="HeaderColor" Type="varchar" MaxLength="10" />
+          <Property Name="ButtonColor" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_QR_Statictics_QR_WebLinks_File">
+          <End Role="QRCode" Type="Self.QRCode" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Statictics" Type="Self.Statictics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QRCode">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Statictics">
+              <PropertyRef Name="QrId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QR_VCardDetail_QR_WebLinks_File">
+          <End Role="QRCode" Type="Self.QRCode" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VCardDetail" Type="Self.VCardDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QRCode">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VCardDetail">
+              <PropertyRef Name="QrId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QRCodeManagementModelStoreContainer">
+          <EntitySet Name="Logo" EntityType="Self.Logo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QRCode" EntityType="Self.QRCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Statictics" EntityType="Self.Statictics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Template" EntityType="Self.Template" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VCardDetail" EntityType="Self.VCardDetail" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_QR_Statictics_QR_WebLinks_File" Association="Self.FK_QR_Statictics_QR_WebLinks_File">
+            <End Role="QRCode" EntitySet="QRCode" />
+            <End Role="Statictics" EntitySet="Statictics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QR_VCardDetail_QR_WebLinks_File" Association="Self.FK_QR_VCardDetail_QR_WebLinks_File">
+            <End Role="QRCode" EntitySet="QRCode" />
+            <End Role="VCardDetail" EntitySet="VCardDetail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QRCodeManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="QRCodeManagementEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Logoes" EntityType="QRCodeManagementModel.Logo" />
+          <EntitySet Name="QRCodes" EntityType="QRCodeManagementModel.QRCode" />
+          <EntitySet Name="Statictics" EntityType="QRCodeManagementModel.Statictic" />
+          <AssociationSet Name="FK_QR_Statictics_QR_WebLinks_File" Association="QRCodeManagementModel.FK_QR_Statictics_QR_WebLinks_File">
+            <End Role="QRCode" EntitySet="QRCodes" />
+            <End Role="Statictic" EntitySet="Statictics" />
+          </AssociationSet>
+          <EntitySet Name="Templates" EntityType="QRCodeManagementModel.Template" />
+          <EntitySet Name="VCardDetails" EntityType="QRCodeManagementModel.VCardDetail" />
+          <AssociationSet Name="FK_QR_VCardDetail_QR_WebLinks_File" Association="QRCodeManagementModel.FK_QR_VCardDetail_QR_WebLinks_File">
+            <End Role="QRCode" EntitySet="QRCodes" />
+            <End Role="VCardDetail" EntitySet="VCardDetails" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Logo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="QRCode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TargetUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StatisticsUrl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Foreground" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Background" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EmbedLogo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="TemplateId" Type="Int32" />
+          <Property Name="Filename" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="QrType" Type="Byte" Nullable="false" />
+          <Property Name="IsArchived" Type="Boolean" Nullable="false" />
+          <Property Name="EmbedLogoId" Type="Int32" />
+          <NavigationProperty Name="Statictics" Relationship="QRCodeManagementModel.FK_QR_Statictics_QR_WebLinks_File" FromRole="QRCode" ToRole="Statictic" />
+          <NavigationProperty Name="VCardDetails" Relationship="QRCodeManagementModel.FK_QR_VCardDetail_QR_WebLinks_File" FromRole="QRCode" ToRole="VCardDetail" />
+        </EntityType>
+        <EntityType Name="Statictic">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QrId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Device" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Os" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LongTitude" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LatTitude" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ScanDate" Type="DateTime" Precision="3" />
+          <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="QRCode" Relationship="QRCodeManagementModel.FK_QR_Statictics_QR_WebLinks_File" FromRole="Statictic" ToRole="QRCode" />
+        </EntityType>
+        <Association Name="FK_QR_Statictics_QR_WebLinks_File">
+          <End Type="QRCodeManagementModel.QRCode" Role="QRCode" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="QRCodeManagementModel.Statictic" Role="Statictic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QRCode">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Statictic">
+              <PropertyRef Name="QrId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Template">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Foreground" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Background" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EmbedLogo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="VCardDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QrId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Company" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="JobTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Zipcode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="About" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProfileImage" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HeaderColor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ButtonColor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="QRCode" Relationship="QRCodeManagementModel.FK_QR_VCardDetail_QR_WebLinks_File" FromRole="VCardDetail" ToRole="QRCode" />
+        </EntityType>
+        <Association Name="FK_QR_VCardDetail_QR_WebLinks_File">
+          <End Type="QRCodeManagementModel.QRCode" Role="QRCode" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="QRCodeManagementModel.VCardDetail" Role="VCardDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QRCode">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="VCardDetail">
+              <PropertyRef Name="QrId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QRCodeManagementModelStoreContainer" CdmEntityContainer="QRCodeManagementEntities">
+          <EntitySetMapping Name="Logoes">
+            <EntityTypeMapping TypeName="QRCodeManagementModel.Logo">
+              <MappingFragment StoreEntitySet="Logo">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QRCodes">
+            <EntityTypeMapping TypeName="QRCodeManagementModel.QRCode">
+              <MappingFragment StoreEntitySet="QRCode">
+                <ScalarProperty Name="EmbedLogoId" ColumnName="EmbedLogoId" />
+                <ScalarProperty Name="IsArchived" ColumnName="IsArchived" />
+                <ScalarProperty Name="QrType" ColumnName="QrType" />
+                <ScalarProperty Name="Filename" ColumnName="Filename" />
+                <ScalarProperty Name="TemplateId" ColumnName="TemplateId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="EmbedLogo" ColumnName="EmbedLogo" />
+                <ScalarProperty Name="Background" ColumnName="Background" />
+                <ScalarProperty Name="Foreground" ColumnName="Foreground" />
+                <ScalarProperty Name="StatisticsUrl" ColumnName="StatisticsUrl" />
+                <ScalarProperty Name="TargetUrl" ColumnName="TargetUrl" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Statictics">
+            <EntityTypeMapping TypeName="QRCodeManagementModel.Statictic">
+              <MappingFragment StoreEntitySet="Statictics">
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="ScanDate" ColumnName="ScanDate" />
+                <ScalarProperty Name="LatTitude" ColumnName="LatTitude" />
+                <ScalarProperty Name="LongTitude" ColumnName="LongTitude" />
+                <ScalarProperty Name="Os" ColumnName="Os" />
+                <ScalarProperty Name="Device" ColumnName="Device" />
+                <ScalarProperty Name="QrId" ColumnName="QrId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Templates">
+            <EntityTypeMapping TypeName="QRCodeManagementModel.Template">
+              <MappingFragment StoreEntitySet="Template">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EmbedLogo" ColumnName="EmbedLogo" />
+                <ScalarProperty Name="Background" ColumnName="Background" />
+                <ScalarProperty Name="Foreground" ColumnName="Foreground" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VCardDetails">
+            <EntityTypeMapping TypeName="QRCodeManagementModel.VCardDetail">
+              <MappingFragment StoreEntitySet="VCardDetail">
+                <ScalarProperty Name="ButtonColor" ColumnName="ButtonColor" />
+                <ScalarProperty Name="HeaderColor" ColumnName="HeaderColor" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="About" ColumnName="About" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="Zipcode" ColumnName="Zipcode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="QrId" ColumnName="QrId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

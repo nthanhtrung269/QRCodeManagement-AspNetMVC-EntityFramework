@@ -1,0 +1,41 @@
+﻿@model QRCodeManagement.Models.ViewModels.LoginViewModel
+<section id="loginForm">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+			@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", data_toggle = "validator" }))
+			{
+				@Html.AntiForgeryToken()
+				<div class="login-panel panel panel-green">
+					<div class="panel-heading">
+						<h3 class="panel-title">Please sign in to system</h3>
+					</div>
+					<div class="panel-body">
+						<fieldset>
+							<div class="form-group">
+								<input class="form-control" placeholder="E-mail" name="email" type="email" value="@(Model?.Email ?? "")" autofocus required>
+							</div>
+							<div class="form-group">
+								<input class="form-control" placeholder="Password" name="password" type="password" value="" required>
+							</div>
+							<div class="form-group captcha-container">
+								<input class="form-control captcha-input" type="text" autocomplete="off" id="captcha" name="captcha" placeholder="Result" required>
+								<img id="captchaImg" class="captcha-image" src="/WebHandler/GetCaptcha.ashx"/>
+								<i class="fa fa-retweet captcha-regenerate" id="refreshCaptcha"></i>
+							</div>
+							<div class="form-group">
+								@Html.ValidationMessageFor(m => m.Captcha, "", new {@class = "text-danger"})
+							</div>
+							<div class="form-group">
+								<input type="submit" value="Login" class="btn btn-lg btn-default btn-block" />
+							</div>
+							<div class="form-group">
+								<a id="forgotPwdLink" class="btn-link" href="@Url.Action(MVC.Account.ForgotPassword())">Forgot password?</a>
+							</div>
+						</fieldset>
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</section>

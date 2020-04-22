@@ -1,0 +1,68 @@
+﻿@using QRCodeManagement.EntityManager.DbEntity;
+
+@{
+	ViewBag.Title = "View Your VCard";
+	Layout = "";
+}
+
+@model VCardDetail
+
+@*TODO: remove unnecessary CSSs & Javascripts*@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="robots" content="noindex, nofollow">
+	<title>QR Code Management</title>
+	<!-- Bootstrap Core CSS -->
+	@Styles.Render("~/main_app/css")
+	@Styles.Render("~/custom/css")
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<!-- MiniColors -->
+	@Styles.Render("~/QRCodeMangement/css")
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row vcard-preview-module vcard-view-module" data-ng-app="Page.CreateQR.VCardApp" ng-controller="Page.CreateQR.VCardApp.PreviewVCardController">
+			@{ Html.RenderPartial(MVC.QrManagement.Views.Partials.VCardPreview, new ViewDataDictionary { { "ViewVCard", true } });}
+		</div>
+	</div>
+	<script type="text/javascript">
+		var vCardModel = {
+			firstName: '@Html.Raw(Model.FirstName)',
+			lastName: '@Html.Raw(@Model.LastName)',
+			company: '@Html.Raw(@Model.Company)',
+			jobTitle: '@Html.Raw(@Model.JobTitle)',
+			street: '@Html.Raw(@Model.Street)',
+			city: '@Html.Raw(@Model.City)',
+			zipCode: '@Html.Raw(@Model.Zipcode)',
+			country: '@Html.Raw(@Model.Country)',
+			state: '@Html.Raw(@Model.State)',
+			phone: '@Html.Raw(@Model.Phone)',
+			mobileNumber: '@Html.Raw(@Model.MobileNumber)',
+			fax: '@Html.Raw(@Model.Fax)',
+			email: '@Html.Raw(@Model.Email)',
+			website: '@Html.Raw(@Model.Website)',
+			about: '@Html.Raw(@Model.About)',
+			profileImage: '@(string.IsNullOrEmpty(Model.ProfileImage) ? "" : $"{QRCodeManagement.Constants.AppConstants.VCARD_IMG_UPLOAD_FOLDER}{Model.ProfileImage}")',
+			color1: '@Html.Raw(@Model.HeaderColor)',
+			color2: '@Html.Raw(@Model.ButtonColor)',
+			qrId: '@Html.Raw(@Model.QrId)'
+		};
+	</script>
+	@Scripts.Render("~/main_app/js")
+	@Scripts.Render("~/file_upload/js")
+	@Scripts.Render("~/bundles/qr_code")
+</body>
+</html>

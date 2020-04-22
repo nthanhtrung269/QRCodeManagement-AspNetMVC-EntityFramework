@@ -1,0 +1,11 @@
+﻿@using QRCodeManagement.Constants
+@using QRCodeManagement.Models
+
+@model QrCodeModel
+
+<input id="qrType" name="qrType" type="hidden" value="@ViewBag.Type">
+<input id="statisticsUrl" name="statisticsUrl" type="hidden" value="@(string.IsNullOrEmpty(Model.StatisticsUrl) ? $"{ViewBag.CheckingUrl}{ViewBag.QrId}" : Model.StatisticsUrl)">
+<input id="id" name="id" type="hidden" value="@(string.IsNullOrEmpty(ViewBag.QrId) ? Model.Id : ViewBag.QrId)">
+<input id="embedLogo" name="embedLogo" type="hidden" value="@Model.EmbedLogo">
+<input id="embedLogoId" name="embedLogoId" type="hidden" value="@(Model.EmbedLogoId ?? 0)">
+<input id="templateId" name="templateId" type="hidden" value="@(Model.TemplateId ?? 0)">

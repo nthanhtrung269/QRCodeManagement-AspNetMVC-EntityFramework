@@ -1,0 +1,139 @@
+﻿@using Microsoft.AspNet.Identity
+@using Webdiyer.WebControls.Mvc
+@using QRCodeManagement.EntityManager.DbEntity
+@using QRCodeManagement.Extensions
+@using QRCodeManagement.Services
+
+@model PagedList<QRCode>
+
+@{ var statistics = new StatisticsService(); }
+
+@{
+	if (Model != null && Model.Count == 0)
+	{
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<h4> No @((ViewBag.Archived != null && ViewBag.Archived == true) ? "archived" : "") QR Code found</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+	else
+	{
+		foreach (var qrCode in Model)
+		{
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-3 qr-logo">
+							<img src="@Html.RenderQrSource(qrCode.StatisticsUrl, qrCode.Foreground, qrCode.Background, qrCode.EmbedLogo)" />
+						</div>
+						<div class="col-md-7 qr-detail">
+							<div class="qr-label">
+								@RendeTitleLink(qrCode)
+							</div>
+							<div class="qr-created-date"><span>CREATED:</span>@qrCode.CreatedDate</div>
+							<div class="qr-target-url"><span>TARGET URL:</span><a href="@qrCode.TargetUrl" target="_blank">@qrCode.TargetUrl</a></div>
+							<div class="qr-actions">
+								@RenderButtons(qrCode.Id, qrCode.Background, qrCode.Foreground, qrCode.Title, qrCode.StatisticsUrl, qrCode.EmbedLogo, qrCode.UserId)
+							</div>
+						</div>
+						<div class="col-md-2 scan-total">
+							<div class="scan-total-inner">
+								<div>@(statistics.GetQrStatisticsByQrId(qrCode.Id).Count)</div>
+								<div>SCANS</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+		<div class="col-md-12 text-center">
+			<div>Showing @(Model.StartItemIndex) to @(Model.EndItemIndex) of @Model.TotalItemCount @(Model.TotalItemCount > 1 ? "entries" : "entry")</div>
+		</div>
+	}
+	<div class="col-md-12 text-center">
+		<div>
+			@Ajax.Pager(Model, new PagerOptions { PageIndexParameterName = "page", ContainerTagName = "ul", CssClass = "pagination", CurrentPagerItemTemplate = "<li class=\"active\"><a href=\"#\">{0}</a></li>", DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</a></li>", PagerItemTemplate = "<li>{0}</li>" }, new MvcAjaxOptions { UpdateTargetId = "qrCodeList", OnBegin = "$('#qrCodeList').fadeOut(50)", OnComplete = "$('#qrCodeList').fadeIn(100)", DataFormId = "searchForm" })
+		</div>
+	</div>
+}
+
+@helper RenderButtons(string qrId, string background, string foreground, string title, string statisticsUrl, string logoPath, string userId)
+{
+	if (ViewBag.Archived == null || ViewBag.Archived == false)
+	{
+		if (User.Identity.GetUserId().Equals(userId)) // Only show edit button if user is owner of the QR
+		{
+				<a href="@Url.Action((MVC.QrManagement.Edit(qrId)))" class="btn btn-success">
+					<i class="fa fa-edit"></i> Edit
+				</a>
+		}
+		<div class="btn-option-container">
+			<a class="dropdown-toggle btn btn-success btn-option" data-toggle="dropdown" href="#">
+				<i class="fa fa-download"></i> Download
+			</a>
+			<ul class="dropdown-menu dropdown-user">
+				<li>
+					<a href="/webhandler/downloadqrcode.ashx?fn=@(title.RemoveNonAlphaNumeric())&ft=svg&c=@(statisticsUrl)&f=%23@(foreground.Replace("#", ""))&b=%23@(background.Replace("#", ""))"><i class="fa fa-file-o fa-fw"></i> Download as SVG</a>
+				</li>
+				<li>
+					<a href="/webhandler/downloadqrcode.ashx?fn=@(title.RemoveNonAlphaNumeric())&ft=png&c=@(statisticsUrl)&f=%23@(foreground.Replace("#", ""))&b=%23@(background.Replace("#", ""))&l=@(logoPath)&s=12"><i class="fa fa-image fa-fw"></i> Download as PNG (540x540)</a>
+				</li>
+				<li>
+					<a href="/webhandler/downloadqrcode.ashx?fn=@(title.RemoveNonAlphaNumeric())&ft=png&c=@(statisticsUrl)&f=%23@(foreground.Replace("#", ""))&b=%23@(background.Replace("#", ""))&l=@(logoPath)&s=67"><i class="fa fa-image fa-fw"></i> Download as PNG (3015x3015)</a>
+				</li>
+			</ul>
+		</div>
+			<a href="@Url.Action(MVC.QrManagement.Chart(qrId))" class="btn btn-success">
+				<i class="fa fa-bar-chart-o"></i> Statistics
+			</a>
+			<a href="javascript:void(0);" class="btn btn-success js-btn-archive" data-qr-id="@qrId">
+				<i class="fa fa-trash-o"></i> Archive
+			</a>
+	}
+	else
+	{
+				<div class="btn-option-container">
+					<a class="dropdown-toggle btn btn-success btn-option" data-toggle="dropdown" href="#">
+						<i class="fa fa-download"></i> Download
+					</a>
+					<ul class="dropdown-menu dropdown-user">
+						<li>
+							<a href="/webhandler/downloadqrcode.ashx?fn=@(title.RemoveNonAlphaNumeric())&ft=svg&c=@(statisticsUrl)&f=%23@(foreground.Replace("#", ""))&b=%23@(background.Replace("#", ""))"><i class="fa fa-file-o fa-fw"></i> Download as SVG</a>
+						</li>
+						<li>
+							<a href="/webhandler/downloadqrcode.ashx?fn=@(title.RemoveNonAlphaNumeric())&ft=png&c=@(statisticsUrl)&f=%23@(foreground.Replace("#", ""))&b=%23@(background.Replace("#", ""))&l=@(logoPath)&s=12"><i class="fa fa-image fa-fw"></i> Download as PNG (540x540)</a>
+						</li>
+						<li>
+							<a href="/webhandler/downloadqrcode.ashx?fn=@(title.RemoveNonAlphaNumeric())&ft=png&c=@(statisticsUrl)&f=%23@(foreground.Replace("#", ""))&b=%23@(background.Replace("#", ""))&l=@(logoPath)&s=67"><i class="fa fa-image fa-fw"></i> Download as PNG (3015x3015)</a>
+						</li>
+					</ul>
+				</div>
+				<a href="@Url.Action(MVC.QrManagement.Chart(qrId))" class="btn btn-success">
+					<i class="fa fa-bar-chart-o"></i> Statistics
+				</a>
+				<a href="javascript:void(0);" class="btn btn-success js-btn-restore" data-qr-id="@qrId">
+					<i class="fa fa-retweet"></i> Restore
+				</a>
+				<a href="javascript:void(0);" class="btn btn-success js-btn-delete" data-qr-id="@qrId">
+					<i class="fa fa-trash-o"></i> Delete
+				</a>
+	}
+}
+
+@helper RendeTitleLink(QRCode qrCode)
+{
+	if (!User.Identity.GetUserId().Equals(qrCode.UserId) || qrCode.IsArchived)
+	{
+		<i class="fa @Html.GetIconClass(qrCode.QrType, qrCode.Filename)"></i>
+		@Html.Raw(@qrCode.Title)
+	}
+	else
+	{
+		<a href="@Url.Action(MVC.QrManagement.Edit(qrCode.Id))"><i class="fa @Html.GetIconClass(qrCode.QrType, qrCode.Filename)"></i>@qrCode.Title</a>
+	}
+}

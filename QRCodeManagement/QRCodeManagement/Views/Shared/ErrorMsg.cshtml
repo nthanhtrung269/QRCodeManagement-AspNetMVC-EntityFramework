@@ -1,0 +1,26 @@
+﻿@model QRCodeManagement.Models.MessageModels
+
+@{
+	Model.Title = Model.Title ?? "An error has occurred!";
+	Model.Message = Model.Message ?? "Sorry, has error occurred in processing, please try again";
+	Layout = "~/Views/Shared/_ResponsiveLayout.cshtml";
+}
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<div class="msg-panel panel panel-danger">
+			<div class="panel-heading">
+				<h2 class="panel-title">@Model.Title</h2>
+			</div>
+			<div class="panel-body">
+				<fieldset>
+					<div class="form-group">
+						<p>
+							@Model.Message
+						</p>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+</div>
+

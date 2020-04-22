@@ -1,0 +1,27 @@
+﻿@{
+	ViewBag.Title = "Create";
+	Layout = "~/Views/Shared/_ResponsiveLayout.cshtml";
+}
+
+@section HeadContent {
+	<!-- MiniColors -->
+	@Styles.Render("~/QRCodeMangement/css")
+}
+
+@if(ViewBag.Type == 0)
+{
+	Html.RenderPartial(MVC.QrManagement.Views.Partials.CreateUrl);
+}
+else if (ViewBag.Type == 1)
+{
+	Html.RenderPartial(MVC.QrManagement.Views.Partials.CreateVCard);
+}
+else if (ViewBag.Type == 2)
+{
+	Html.RenderPartial(MVC.QrManagement.Views.Partials.CreateFile);
+}
+
+@section BottomOfPageContent {
+	@Scripts.Render("~/file_upload/js")
+	@Scripts.Render("~/bundles/qr_code")
+}

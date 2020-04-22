@@ -1,0 +1,82 @@
+﻿@model QRCodeManagement.Models.ApplicationUser
+@{
+	ViewBag.Title = "Account Detail";
+	Layout = "~/Views/Shared/_ResponsiveLayout.cshtml";
+}
+
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header">Account Detail</h1>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<p id="editResult" class="alert-success"></p>
+	</div>
+</div>
+<!-- /.row -->
+<div class="row main-container">
+	<div class="col-md-8">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<form role="form" id = "editAccount" action="@Url.Action(MVC.ManageUser.DeleteAccount())" class="edit-account-container" method="POST">
+					<input type="hidden" name="userId" value="@Model.Id"/>
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div class="tab-pane fade active in" id="home-pills">
+							<div id="vcard_form" class="forms">
+								<div class="col-md-8 form-group">
+									<label class="control-label edit-account-label">Full Name: </label>
+									<span> @Model.FirstName @Model.LastName</span>
+								</div>
+								<div class="col-md-8 form-group">
+									<label class="control-label edit-account-label">Email: </label>
+									<span>@Model.Email</span>
+								</div>
+								<div class="col-md-8 form-group">
+									<label class="control-label edit-account-label">Created Date: </label>
+									<span>@Model.CreatedDate</span>
+								</div>
+								<div class="col-md-8 form-group">
+									<label class="control-label edit-account-label">Latest Login: </label>
+									<span>@Model.LastLogin</span>
+								</div>
+								<div class="col-md-8 form-group">
+									<label class="control-label edit-account-label">Confirmed: </label>
+									<span>@Html.Raw(Model.EmailConfirmed ? "Yes" : $"<a id='resendConfirm' data-user-id = '{Model.Id}' href='javascript:void(0);' title='Resend email to confirm'>No</a>")</span>
+								</div>
+								<div class="col-md-8 form-group">
+									<label class="control-label edit-account-label">Blocked : </label>
+									<a id="changeBlock" data-blocked="@Model.LockoutEndDateUtc.HasValue" data-user-id="@Model.Id" href="javascript:void(0);">@ShowBlockAccount(Model.LockoutEndDateUtc.HasValue)</a>
+								</div>
+								<div class="col-md-8 form-group">
+									<button type="button" id="resetPassword" data-user-id="@Model.Id" class="btn btn-success"><i class="fa fa-repeat icon-inner"></i>Reset Password</button>
+									@if (ViewBag?.CanDelete)
+									{
+										<button type="button" id ="deleteAccount"class="btn btn-success"><i class="fa fa-ban icon-inner"></i>Delete Account</button>
+									}
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+@helper ShowBlockAccount(bool isBlock)
+{
+	if (isBlock)
+	{
+			<i id="block_icon" class="fa fa-lock icon-block" aria-hidden="true" title="Click to unblock"></i>
+	}
+	else
+	{
+			<i id="block_icon" class="fa fa-unlock icon-block" aria-hidden="true" title="Click to block"></i>
+	}
+}
+
+@section BottomOfPageContent {
+	@Scripts.Render("~/manage_account/js");
+}
